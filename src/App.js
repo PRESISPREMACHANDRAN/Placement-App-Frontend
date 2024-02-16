@@ -1,10 +1,11 @@
 
 import './App.css';
+import Questionnaire from './Components/Questionnaire';
 
 function App() {
   return (
     <div >
-     <h1>Placement App</h1>
+     <Questionnaire/>
     </div>
   );
 }
