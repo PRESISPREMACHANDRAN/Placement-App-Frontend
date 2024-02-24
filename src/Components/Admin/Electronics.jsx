@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Header from "../Header";
-import Footer from "../Footer";
+
+
 import AdminDashboard from "./AdminDashboard";
+import AdminHeader from "./AdminHeader";
 
 const Electronics = () => {
   const [data, changeData] = useState({ data: [] });
@@ -21,7 +22,7 @@ const Electronics = () => {
 
   return (
     <>
-    <Header/>
+  <AdminHeader/>
       <div className="container">
         <div className="row">
           <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
