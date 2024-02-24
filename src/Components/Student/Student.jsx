@@ -1,11 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../Header";
-import Footer from "../Footer";
 
 const Student = () => {
-    
   const navigate = useNavigate();
 
   const [data, changeData] = useState({
@@ -18,6 +15,7 @@ const Student = () => {
     attendedInterviews: "No",
     areaOfInterest: "",
     receivedJobOffers: "No",
+    photo: null, // Add photo field to store the selected file
   });
 
   const readValue = (e) => {
@@ -26,17 +24,38 @@ const Student = () => {
     changeData({ ...data, [e.target.name]: value });
   };
 
+  // Handle file selection
+  const handleFileSelect = (e) => {
+    changeData({ ...data, photo: e.target.files[0] });
+  };
+
   const submitValue = () => {
-    console.log(data);
-    axios.post("http://localhost:4000/addStudent", data).then((response) => {
-      if (response.data.status === "success") {
-        alert("Successfully added");
-        // Redirect to studentDashboard
-        navigate("/studentDashboard");
-      } else {
-        alert("Error....");
-      }
-    });
+    const formData = new FormData();
+    formData.append("email", data.email);
+    formData.append("name", data.name);
+    formData.append("studentID", data.studentID);
+    formData.append("stream", data.stream);
+    formData.append(
+      "registeredInPlacementPortal",
+      data.registeredInPlacementPortal
+    );
+    formData.append("placementID", data.placementID);
+    formData.append("attendedInterviews", data.attendedInterviews);
+    formData.append("areaOfInterest", data.areaOfInterest);
+    formData.append("receivedJobOffers", data.receivedJobOffers);
+    formData.append("photo", data.photo); // Append the selected file
+
+    axios
+      .post("http://localhost:4000/addStudent", formData)
+      .then((response) => {
+        if (response.data.status === "success") {
+          alert("Successfully added");
+          // Redirect to studentDashboard
+          navigate("/studentDashboard");
+        } else {
+          alert("Error....");
+        }
+      });
   };
 
   const refreshPage = () => {
@@ -45,7 +64,6 @@ const Student = () => {
 
   return (
     <>
-      <Header />
       <div className="container">
         <div className="row">
           <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
@@ -103,12 +121,17 @@ const Student = () => {
                   <option value="MCA">MCA</option>
                 </select>
               </div>
-              {/* <div className="col col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+              <div className="col col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
                 <label htmlFor="" className="form-label">
-                  photo
+                  Photo
                 </label>
-                <input type="text" className="form-control" />
-              </div> */}
+                <input
+                  type="file"
+                  className="form-control"
+                  name="photo"
+                  onChange={handleFileSelect} // Handle file selection
+                />
+              </div>
               <div className="col col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
                 <label htmlFor="" className="form-label">
                   Registered in Placement Portal?
@@ -200,7 +223,6 @@ const Student = () => {
           </div>
         </div>
       </div>
-      <Footer/>
     </>
   );
 };
