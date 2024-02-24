@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "name": "Attach",
+      "port": 9229,
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "type": "chrome",
+      "name": "http://Secur!tyP!llai567",
+      "request": "launch",
+      "url": "http://Secur!tyP!llai567"
+    }
+  ]
+}
