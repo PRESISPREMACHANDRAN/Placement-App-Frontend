@@ -19,7 +19,7 @@ const StudentLogin = () => {
 
   const submitValue = () => {
     axios
-      .post("http://localhost:4000/studentLogin", data)
+      .post("http://54.173.32.19:4000/studentLogin", data)
       .then((response) => {
         if (response.data.data.length === 0) {
           alert("Email or password incorrect");

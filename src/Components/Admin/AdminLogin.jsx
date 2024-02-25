@@ -19,7 +19,7 @@ const AdminLogin = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:4000/adminLogin",
+        "http://54.173.32.19:4000/adminLogin",
         data
       );
       const responseData = response.data;

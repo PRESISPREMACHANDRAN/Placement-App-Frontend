@@ -10,7 +10,7 @@ const StreamRanks = () => {
 
   const fetchStreamRanks = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/streamRanks");
+      const response = await axios.post("http://54.173.32.19:4000/streamRanks");
       setStreamRanks(response.data);
     } catch (error) {
       console.error("Error fetching stream ranks:", error);

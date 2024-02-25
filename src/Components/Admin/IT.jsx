@@ -9,7 +9,7 @@ const IT = () => {
 
   const fetchData = () => {
     axios
-      .post("http://localhost:4000/viewStudent", { stream: "IT" })
+      .post("http://54.173.32.19:4000/viewStudent", { stream: "IT" })
       .then((response) => {
         changeData(response.data);
       });

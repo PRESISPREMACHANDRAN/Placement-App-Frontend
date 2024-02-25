@@ -10,7 +10,7 @@ const MCA = () => {
 
   const fetchData = () => {
     axios
-      .post("http://localhost:4000/viewStudent", { stream: "MCA" })
+      .post("http://54.173.32.19:4000/viewStudent", { stream: "MCA" })
       .then((response) => {
         changeData(response.data);
       });
