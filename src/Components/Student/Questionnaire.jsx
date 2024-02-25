@@ -50,11 +50,15 @@ const Questionnaire = () => {
       Object.entries(data).forEach(([key, value]) => {
         formData.append(key, value);
       });
-      await axios.post("http://localhost:4000/submitQuestionnaire", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios.post(
+        "http:// 54.173.32.19 :4000/submitQuestionnaire",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       alert("Form submitted successfully!");
       setData({
         email: "",
