@@ -17,6 +17,7 @@ const Student = () => {
     attendedInterviews: "No",
     areaOfInterest: "",
     receivedJobOffers: "No",
+    jobOfferDocument: null, // Add field to store the job offer document
     photo: null, // Add photo field to store the selected file
   });
 
@@ -26,12 +27,23 @@ const Student = () => {
     changeData({ ...data, [e.target.name]: value });
   };
 
+  // // Handle file selection
+  // const handleFileSelect = (e) => {
+  //   changeData({ ...data, photo: e.target.files[0] });
+  // };
+
   // Handle file selection
   const handleFileSelect = (e) => {
-    changeData({ ...data, photo: e.target.files[0] });
+    changeData({ ...data, [e.target.name]: e.target.files[0] });
   };
 
   const submitValue = () => {
+    // Check if areaOfInterest is not empty before submitting
+    if (data.areaOfInterest.trim() === "") {
+      alert("Please choose your area of interest.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("email", data.email);
     formData.append("name", data.name);
@@ -46,6 +58,9 @@ const Student = () => {
     formData.append("areaOfInterest", data.areaOfInterest);
     formData.append("receivedJobOffers", data.receivedJobOffers);
     formData.append("photo", data.photo); // Append the selected file
+     if (data.receivedJobOffers === "Yes") {
+       formData.append("jobOfferDocument", data.jobOfferDocument); // Append job offer document if received
+     }
 
     axios
       .post("http://54.173.32.19:4000/addStudent", formData)
@@ -66,7 +81,7 @@ const Student = () => {
 
   return (
     <>
-    <Header/>
+      <Header />
       <div className="container">
         <div className="row">
           <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
@@ -152,7 +167,7 @@ const Student = () => {
                 {data.registeredInPlacementPortal === "Yes" && (
                   <div className="mt-3">
                     <label htmlFor="" className="form-label">
-                      Placement ID
+                      Placement ID <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                       type="text"
@@ -181,13 +196,14 @@ const Student = () => {
 
               <div className="col col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
                 <label htmlFor="" className="form-label">
-                  Area of Interest
+                  Area of Interest <span style={{ color: "red" }}>*</span>
                 </label>
                 <select
                   className="form-control"
                   name="areaOfInterest"
                   value={data.areaOfInterest}
                   onChange={readValue}
+                  required // Make the field required
                 >
                   <option value="">Select Area of Interest</option>
                   <option value="Data Analytics">Data Analytics</option>
@@ -211,6 +227,20 @@ const Student = () => {
                   <option value="Yes">Yes</option>
                 </select>
                 {/* jod offer upload */}
+                {data.receivedJobOffers === "Yes" && (
+                  <div className="mt-3">
+                    <label htmlFor="" className="form-label">
+                      Job Offer Document (PDF){" "}
+                      <span style={{ color: "red" }}>*</span>
+                    </label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      name="jobOfferDocument"
+                      onChange={handleFileSelect}
+                    />
+                  </div>
+                )}
               </div>
               <div className="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
                 <button className="btn btn-primary" onClick={submitValue}>
@@ -226,7 +256,7 @@ const Student = () => {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };

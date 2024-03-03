@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "../Header";
 import Footer from "../Footer";
 
+
+
 const StudentLogin = () => {
- 
   const [data, changeData] = useState({
     email: "",
     password: "",
@@ -86,8 +87,7 @@ const StudentLogin = () => {
           </div>
         </div>
       </div>
-      <Footer/>
-    
+      <Footer />
     </>
   );
 };

@@ -13,7 +13,9 @@ const AdminDashboard = () => {
     // Fetch student data from backend
     async function fetchStudentData() {
       try {
-        const response = await axios.post("/viewStudent"); // Assuming your backend server is running on the same domain
+        const response = await axios.post(
+          `${process.env.BACKEND_URL}/viewStudent`
+        ); // Assuming your backend server is running on the same domain
         if (response.data.status === "success") {
           setStudentData(response.data.data);
         }

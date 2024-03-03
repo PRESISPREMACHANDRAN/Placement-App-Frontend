@@ -1,8 +1,7 @@
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import './App.css';
+import "./App.css";
 import Home from "./Components/Home";
-import StudentLogin from './Components/Student/StudentLogin';
+import StudentLogin from "./Components/Student/StudentLogin";
 import StudentDashboard from "./Components/Student/StudentDashboard";
 import Student from "./Components/Student/Student";
 
@@ -31,8 +30,7 @@ function App() {
         <Route path="/mca" element={<MCA />} />
         <Route path="/electronics" element={<Electronics />} />
         <Route path="/adminDashboard" element={<AdminDashboard />} />
-        <Route path="/streamRanks" element={<StreamRanks/>} />
-
+        <Route path="/streamRanks" element={<StreamRanks />} />
       </Routes>
     </BrowserRouter>
   );
