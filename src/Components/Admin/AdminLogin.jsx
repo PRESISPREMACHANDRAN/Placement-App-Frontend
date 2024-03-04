@@ -17,9 +17,28 @@ const AdminLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!data.email || !emailRegex.test(data.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    // Password validation
+    if (!data.password || data.password.length < 6) {
+      alert("Please enter a password with at least 6 characters.");
+      return;
+    }
+
+    // Stream validation
+    if (!data.stream) {
+      alert("Please select a stream.");
+      return;
+    }
+
     try {
       const response = await axios.post(
-        "http://54.173.32.19:4000/adminLogin",
+        process.env.REACT_APP_BASEURL + "/adminLogin",
         data
       );
       const responseData = response.data;
@@ -30,6 +49,9 @@ const AdminLogin = () => {
         password === data.password &&
         stream === data.stream
       ) {
+        let adminID = response.data.data._id;
+        sessionStorage.setItem("adminID", adminID);
+
         // Redirect to specific page based on the stream
         switch (stream) {
           case "IT":
@@ -38,13 +60,10 @@ const AdminLogin = () => {
           case "MCA":
             navigate("/mca");
             break;
-          case "Electronics":
+          case "ELECTRONICS":
             navigate("/electronics");
             break;
-          // case "Computer Science":
-          //   navigate("/cybersecurity");
-          //   break;
-          
+
           default:
             break;
         }

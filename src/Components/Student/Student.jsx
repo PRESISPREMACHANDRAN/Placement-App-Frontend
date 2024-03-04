@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header";
 import Footer from "../Footer";
@@ -7,11 +7,21 @@ import Footer from "../Footer";
 const Student = () => {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (
+      sessionStorage.getItem("studID") == null ||
+      sessionStorage.getItem("studID") === ""
+    ) {
+      navigate("/studentLogin");
+      console.log(sessionStorage.getItem("studID"));
+    }
+  });
+
   const [data, changeData] = useState({
-    email: "",
-    name: "",
-    studentID: "",
-    stream: "",
+    email: sessionStorage.getItem("studEmail"),
+    name: sessionStorage.getItem("studName"),
+    studentID: sessionStorage.getItem("studIDNo"),
+    stream: sessionStorage.getItem("studStream"),
     registeredInPlacementPortal: "No",
     placementID: "",
     attendedInterviews: "No",
@@ -44,6 +54,12 @@ const Student = () => {
       return;
     }
 
+      // If the student is registered in the placement portal, validate Placement ID
+  if (data.registeredInPlacementPortal === "Yes" && data.placementID.trim() === "") {
+    alert("Please enter your Placement ID.");
+    return;
+  }
+
     const formData = new FormData();
     formData.append("email", data.email);
     formData.append("name", data.name);
@@ -58,12 +74,12 @@ const Student = () => {
     formData.append("areaOfInterest", data.areaOfInterest);
     formData.append("receivedJobOffers", data.receivedJobOffers);
     formData.append("photo", data.photo); // Append the selected file
-     if (data.receivedJobOffers === "Yes") {
-       formData.append("jobOfferDocument", data.jobOfferDocument); // Append job offer document if received
-     }
+    if (data.receivedJobOffers === "Yes") {
+      formData.append("jobOfferDocument", data.jobOfferDocument); // Append job offer document if received
+    }
 
     axios
-      .post("http://54.173.32.19:4000/addStudent", formData)
+      .post(process.env.REACT_APP_BASEURL + "/addStudent", formData)
       .then((response) => {
         if (response.data.status === "success") {
           alert("Successfully added");

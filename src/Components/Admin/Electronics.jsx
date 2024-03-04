@@ -4,13 +4,26 @@ import React, { useEffect, useState } from "react";
 
 import AdminDashboard from "./AdminDashboard";
 import AdminHeader from "./AdminHeader";
+import { useNavigate } from "react-router-dom";
 
 const Electronics = () => {
   const [data, changeData] = useState({ data: [] });
+    const navigate = useNavigate();
+    useEffect(() => {
+      if (
+        sessionStorage.getItem("adminID") == null ||
+        sessionStorage.getItem("adminID") === ""
+      ) {
+        navigate("/adminLogin");
+        console.log(sessionStorage.getItem("adminID"));
+      }
+    });
 
   const fetchData = () => {
     axios
-      .post("http://54.173.32.19:4000/viewStudent", { stream: "Electronics" })
+      .post(process.env.REACT_APP_BASEURL + "/viewStudent", {
+        stream: "ELECTRONICS",
+      })
       .then((response) => {
         changeData(response.data);
       });

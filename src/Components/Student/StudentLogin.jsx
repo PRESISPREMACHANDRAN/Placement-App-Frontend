@@ -12,30 +12,73 @@ const StudentLogin = () => {
     password: "",
   });
 
+   const [errors, setErrors] = useState({});
+
   const navigate = useNavigate();
 
   const readValue = (e) => {
     changeData({ ...data, [e.target.name]: e.target.value });
   };
 
+  const validateForm = () => {
+    let errors = {};
+    let isValid = true;
+
+    // Email validation
+    if (!data.email.trim()) {
+      errors.email = "Email is required";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+      errors.email = "Email is invalid";
+      isValid = false;
+    }
+
+    // Password validation
+    if (!data.password.trim()) {
+      errors.password = "Password is required";
+      isValid = false;
+    } else if (data.password.length < 6) {
+      errors.password = "Password must be at least 6 characters long";
+      isValid = false;
+    }
+
+    setErrors(errors);
+    return isValid;
+  };
   const submitValue = () => {
-    axios
-      .post("http://54.173.32.19:4000/studentLogin", data)
-      .then((response) => {
-        if (response.data.data.length === 0) {
+    console.log(process.env.REACT_APP_BASEURL);
+    if (validateForm()) {
+      axios
+        .post(process.env.REACT_APP_BASEURL + "/studentLogin", data)
+        .then((response) => {
+          if (response.data.data.length === 0) {
+            alert("Email or password incorrect");
+          } else {
+            let studentID = response.data.data._id;
+
+            console.log(studentID);
+            let studentName = response.data.data.name;
+            let studentEmail = response.data.data.email;
+            let studentStream = response.data.data.stream;
+            let studentIDNo = response.data.data.studentID;
+
+            sessionStorage.setItem("studName", studentName);
+            sessionStorage.setItem("studEmail", studentEmail);
+            sessionStorage.setItem("studStream", studentStream);
+            sessionStorage.setItem("studIDNo", studentIDNo);
+            sessionStorage.setItem("studID", studentID);
+
+            alert("Login successful");
+            navigate("/student");
+          }
+        })
+        .catch((error) => {
+          console.error("An error occurred:", error.message);
           alert("Email or password incorrect");
-        } else {
-          alert("Login successful");
-          navigate("/student");
-        }
-      })
-      .catch((error) => {
-        console.error("An error occurred:", error.message);
-        alert("Email or password incorrect");
-      })
-      .finally(() => {
-        window.location.reload(); // This will reload the page after closing the alert box
-      });
+        })
+        
+    }
+    
   };
 
   return (
@@ -62,6 +105,9 @@ const StudentLogin = () => {
                   className="form-control"
                   placeholder="Enter Email"
                 />
+                {errors.email && (
+                  <div className="text-danger">{errors.email}</div>
+                )}
               </div>
               <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                 <label htmlFor="password" className="form-label">
@@ -76,6 +122,9 @@ const StudentLogin = () => {
                   className="form-control"
                   placeholder="Enter password"
                 />
+                {errors.password && (
+                  <div className="text-danger">{errors.password}</div>
+                )}
               </div>
 
               <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
@@ -93,3 +142,10 @@ const StudentLogin = () => {
 };
 
 export default StudentLogin;
+
+
+
+
+
+
+

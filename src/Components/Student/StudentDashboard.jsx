@@ -1,10 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom"; 
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom"; 
 import Header from "../Header";
 import Footer from "../Footer";
 
 const StudentDashboard = () => {
   <Header/>
+    const navigate = useNavigate();
+ useEffect(() => {
+   if (
+     sessionStorage.getItem("studID") == null ||
+     sessionStorage.getItem("studID") === ""
+   ) {
+     navigate("/studentLogin");
+     console.log(sessionStorage.getItem("studID"));
+   }
+ });
   return (
     <>
       <Header />
