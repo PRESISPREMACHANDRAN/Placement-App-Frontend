@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const StreamRanks = () => {
   const [streamRanks, setStreamRanks] = useState([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (
+      sessionStorage.getItem("adminID") == null ||
+      sessionStorage.getItem("adminID") === ""
+    ) {
+      navigate("/adminLogin");
+      console.log(sessionStorage.getItem("adminID"));
+    }
+  });
 
   useEffect(() => {
     fetchStreamRanks();
@@ -11,7 +22,7 @@ const StreamRanks = () => {
   const fetchStreamRanks = async () => {
     try {
       const response = await axios.post(
-        "http://54.173.32.19:4000/streamRanks"
+        process.env.REACT_APP_BASEURL + "/streamRanks"
       );
       setStreamRanks(response.data);
     } catch (error) {

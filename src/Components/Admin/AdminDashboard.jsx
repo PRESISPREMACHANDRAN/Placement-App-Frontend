@@ -2,19 +2,30 @@ import React, { useState, useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 import axios from "axios"; // Import Axios for making HTTP requests
 import StreamRanks from "./StreamRanks";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const chartRefs = useRef([]);
   const [totalScore, setTotalScore] = useState(0);
   const [streamRank, setStreamRank] = useState(0);
   const [studentData, setStudentData] = useState(null); // State to store student data
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (
+      sessionStorage.getItem("adminID") == null ||
+      sessionStorage.getItem("adminID") === ""
+    ) {
+      navigate("/adminLogin");
+      console.log(sessionStorage.getItem("adminID"));
+    }
+  });
 
   useEffect(() => {
     // Fetch student data from backend
     async function fetchStudentData() {
       try {
         const response = await axios.post(
-          `${process.env.BACKEND_URL}/viewStudent`
+          process.env.REACT_APP_BASEURL+ "/viewStudent"
         ); // Assuming your backend server is running on the same domain
         if (response.data.status === "success") {
           setStudentData(response.data.data);

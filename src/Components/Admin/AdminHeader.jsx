@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom"; 
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom"; 
 
 const AdminHeader = () => {
   const headerStyle = {
@@ -12,6 +12,16 @@ const AdminHeader = () => {
     // For now, let's assume it clears session storage
     sessionStorage.clear(); // Clearing session storage
   };
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (
+      sessionStorage.getItem("adminID") == null ||
+      sessionStorage.getItem("adminID") === ""
+    ) {
+      navigate("/adminLogin");
+      console.log(sessionStorage.getItem("adminID"));
+    }
+  });
 
   return (
     <header style={headerStyle} className="py-4">

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header";
 import Footer from "../Footer";
@@ -7,18 +7,29 @@ import Footer from "../Footer";
 const Student = () => {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (
+      sessionStorage.getItem("studID") == null ||
+      sessionStorage.getItem("studID") === ""
+    ) {
+      navigate("/studentLogin");
+      console.log(sessionStorage.getItem("studID"));
+    }
+  });
+
   const [data, changeData] = useState({
-    email: "",
-    name: "",
-    studentID: "",
-    stream: "",
+    email: sessionStorage.getItem("studEmail"),
+    name: sessionStorage.getItem("studName"),
+    studentID: sessionStorage.getItem("studIDNo"),
+    stream: sessionStorage.getItem("studStream"),
+    photo: sessionStorage.getItem("studPhoto"),
     registeredInPlacementPortal: "No",
     placementID: "",
     attendedInterviews: "No",
     areaOfInterest: "",
     receivedJobOffers: "No",
     jobOfferDocument: null, // Add field to store the job offer document
-    photo: null, // Add photo field to store the selected file
+   
   });
 
   const readValue = (e) => {
@@ -27,14 +38,17 @@ const Student = () => {
     changeData({ ...data, [e.target.name]: value });
   };
 
-  // // Handle file selection
   // const handleFileSelect = (e) => {
-  //   changeData({ ...data, photo: e.target.files[0] });
+  //   changeData({ ...data, photo: URL.createObjectURL(e.target.files[0]) });
   // };
+
 
   // Handle file selection
   const handleFileSelect = (e) => {
-    changeData({ ...data, [e.target.name]: e.target.files[0] });
+    changeData(
+      { ...data, [e.target.name]: e.target.files[0] }
+     
+    );
   };
 
   const submitValue = () => {
@@ -43,6 +57,12 @@ const Student = () => {
       alert("Please choose your area of interest.");
       return;
     }
+
+      // If the student is registered in the placement portal, validate Placement ID
+  if (data.registeredInPlacementPortal === "Yes" && data.placementID.trim() === "") {
+    alert("Please enter your Placement ID.");
+    return;
+  }
 
     const formData = new FormData();
     formData.append("email", data.email);
@@ -57,13 +77,13 @@ const Student = () => {
     formData.append("attendedInterviews", data.attendedInterviews);
     formData.append("areaOfInterest", data.areaOfInterest);
     formData.append("receivedJobOffers", data.receivedJobOffers);
-    formData.append("photo", data.photo); // Append the selected file
-     if (data.receivedJobOffers === "Yes") {
-       formData.append("jobOfferDocument", data.jobOfferDocument); // Append job offer document if received
-     }
+    formData.append("photo", data.photo);
+    if (data.receivedJobOffers === "Yes") {
+      formData.append("jobOfferDocument", data.jobOfferDocument); // Append job offer document if received
+    }
 
     axios
-      .post("http://54.173.32.19:4000/addStudent", formData)
+      .post(process.env.REACT_APP_BASEURL + "/addStudent", formData)
       .then((response) => {
         if (response.data.status === "success") {
           alert("Successfully added");
@@ -139,16 +159,17 @@ const Student = () => {
                   <option value="MCA">MCA</option>
                 </select>
               </div>
-              <div className="col col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+              <div className="col col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4"> 
                 <label htmlFor="" className="form-label">
                   Photo
-                </label>
-                <input
+                </label> 
+              <input
                   type="file"
                   className="form-control"
                   name="photo"
                   onChange={handleFileSelect} // Handle file selection
-                />
+                /> 
+              
               </div>
               <div className="col col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
                 <label htmlFor="" className="form-label">
