@@ -77,7 +77,7 @@ const Student = () => {
     formData.append("attendedInterviews", data.attendedInterviews);
     formData.append("areaOfInterest", data.areaOfInterest);
     formData.append("receivedJobOffers", data.receivedJobOffers);
-    formData.append("photo", data.photo);
+    formData.append("photo", data.photo); // Append the selected file
     if (data.receivedJobOffers === "Yes") {
       formData.append("jobOfferDocument", data.jobOfferDocument); // Append job offer document if received
     }
