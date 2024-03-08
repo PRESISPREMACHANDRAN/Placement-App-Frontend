@@ -155,21 +155,20 @@ const Student = () => {
                 >
                   <option value="">Select Stream</option>
                   <option value="IT">IT</option>
-                  <option value="Electronics">Electronics</option>
+                  <option value="ELECTRONICS">ELECTRONICS</option>
                   <option value="MCA">MCA</option>
                 </select>
               </div>
-              <div className="col col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4"> 
+              <div className="col col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
                 <label htmlFor="" className="form-label">
                   Photo
-                </label> 
-              <input
+                </label>
+                <input
                   type="file"
                   className="form-control"
                   name="photo"
                   onChange={handleFileSelect} // Handle file selection
-                /> 
-              
+                />
               </div>
               <div className="col col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
                 <label htmlFor="" className="form-label">
